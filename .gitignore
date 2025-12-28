@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Generated protobuf files
+proto/*_pb2.py
+proto/*_pb2_grpc.py
+proto/__pycache__/
+
+# Data and logs
+data/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
