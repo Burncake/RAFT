@@ -172,6 +172,7 @@ class RaftNode:
     
     def handle_submit_command(self, request):
         """Handle client command submission"""
+        # Check if leader (without holding lock for entire operation)
         with self.state.lock:
             if self.state.state != NodeState.LEADER:
                 # Not the leader, redirect to current leader
@@ -184,24 +185,25 @@ class RaftNode:
             # Append command to log
             index = self.state.append_log(self.state.current_term, request.command)
             print(f"[Node-{self.node_id}] Leader received command: {request.command}, index={index}")
-            
-            # Wait for commit (simplified - in real implementation, would use condition variable)
-            timeout = 5.0  # 5 second timeout
-            start_time = time.time()
-            while time.time() - start_time < timeout:
+        
+        # Wait for commit (release lock so heartbeat thread can work)
+        timeout = 5.0  # 5 second timeout
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            with self.state.lock:
                 if self.state.commit_index >= index:
                     return raft_pb2.ClientResponse(
                         success=True,
                         message=f"Command committed at index {index}",
                         leader_id=self.node_id
                     )
-                time.sleep(0.1)
-            
-            return raft_pb2.ClientResponse(
-                success=False,
-                message="Timeout waiting for commit",
-                leader_id=self.node_id
-            )
+            time.sleep(0.05)  # Short sleep to avoid busy-waiting
+        
+        return raft_pb2.ClientResponse(
+            success=False,
+            message="Timeout waiting for commit",
+            leader_id=self.node_id
+        )
     
     def handle_isolate(self, request):
         """Handle isolation request (for testing)"""
