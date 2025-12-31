@@ -1,6 +1,7 @@
-# RAFT Implementation - Quick Start Guide
+# [RAFT Implementation - Quick Start Guide](https://github.com/Burncake/RAFT)
+Github Repository: [RAFT](https://github.com/Burncake/RAFT)
 
-## Step-by-Step Setup
+## Step-by-Step Setup (Ensure you're in the source code root directory)
 
 ### 1. Install Dependencies (1 minute)
 
@@ -124,42 +125,8 @@ taskkill /PID <pid> /F
 ### "No leader found"
 Wait 3-5 seconds after starting cluster for election to complete.
 
-## What to Check
-
-✅ All 5 nodes start successfully  
-✅ One node becomes leader within 5 seconds  
-✅ Commands submitted via client succeed  
-✅ Data appears in `data/` directory  
-✅ All nodes have same data after commands  
-✅ Cluster recovers when leader fails  
-✅ Tests pass successfully  
-
-## Next Steps
-
-1. ✅ Run the cluster
-2. ✅ Test basic commands
-3. ✅ Run fault tolerance tests
-4. ✅ Read the code in `src/` to understand implementation
-5. ✅ Modify parameters (election timeout, cluster size)
-6. ✅ Write your report based on observations
-
 ## Performance Tips
 
 - Election timeout: 150-300ms (adjust for faster/slower networks)
 - Heartbeat interval: 50ms (keep < election_timeout/3)
 - For more nodes: Increase timeouts proportionally
-
-## Report Checklist
-
-Your report should include:
-
-📋 RAFT algorithm description  
-📋 How leader election works  
-📋 How log replication ensures consistency  
-📋 Test results with screenshots  
-📋 Discussion of failure scenarios  
-📋 Comparison with pBFT  
-📋 Code architecture explanation  
-📋 Self-evaluation (strengths/weaknesses)  
-
-Good luck! 🚀
